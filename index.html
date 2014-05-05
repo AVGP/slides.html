@@ -1,0 +1,74 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Slides-Blocks Demo</title>
+    <style type="text/css">
+      html, body {
+        width:  100%; 
+        height: 100%;
+
+        padding: 0;
+        margin:  0;
+        
+        background: url('https://farm4.staticflickr.com/3300/3238519038_c3d36f7a5b_b_d.jpg'); 
+        background-size: cover;
+      }
+      
+      x-slide {
+        background: rgba(255, 255, 255, 0.75);
+        border-radius: 5px;
+        box-shadow: 0px 0px 20px 2px skyblue;
+        box-sizing: border-box;
+        
+        position: absolute;
+        
+        width:  90%;
+        height: 90%;
+        left:    5%;
+        top:     5%;
+
+        padding: 3px;
+        
+      }
+
+      h1, h2 {
+        -webkit-margin-before: 0;
+        -webkit-margin-after:  0;
+      }
+      
+      h1 {
+        margin: 0 0 1em 16px;
+      }
+      
+      h2 {
+        margin: -1.5em 0 1em 16px;
+      }
+    </style>
+    
+    <link rel="import" href="x-slide.html">
+    <link rel="import" href="x-deck.html">
+  </head>
+  <body>
+    <x-deck>
+      <x-slide class="active">
+        <h1>Slides Blocks</h1>
+        <h2>HTML 5 web components for your slide decks</h2>
+        <ul>
+            <li>Allow printing, so you can easily export to PDF</li>
+            <li>Can be styled easily</li>
+            <li>Controlled with arrow keys.</li>
+        </ul>
+        <p>Background <a href="https://creativecommons.org/licenses/by/2.0/">CC-BY 2.0</a> 
+        by <a href="https://www.flickr.com/photos/derekharkness/">Derek Harkness</a></p>
+      </x-slide>
+    
+      <x-slide style="border-radius: 0px; top: 40%; height: 20%; left: 0; width: 100%; text-align: center">
+        <h1 style="font-size: 5em">Slide 2</h1>
+      </x-slide>
+    
+      <x-slide>
+        <h1>Slide 3</h1>
+      </x-slide>
+    </x-deck>
+  </body>
+</html>
