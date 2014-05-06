@@ -1,37 +1,3 @@
-<template id="deck">
-  <style>
-    ::content x-slide {
-      display: none;
-    }
-
-    ::content x-slide.active {
-      display: block;
-    }
-
-    .deck {
-      width:  100%;
-      height: 100%;
-    }
-
-    @media print {
-      ::content x-slide {
-        display: block;
-        position: relative;
-        max-width: 29.7cm;
-        height: 15cm;
-        padding: 2cm;
-        margin: 1cm auto;
-        page-break-after: always;
-        overflow: hidden;
-      }
-    }
-  </style>
-  <div>
-    <content></content>
-  </div>
-</template>
-
-<script>
   var XDeck = undefined;
 
   (function() {
@@ -77,27 +43,26 @@
     }
     
     var addTouchListener = function() {
-      var gestureStartX = 0;
-      var MINMOVEX = 50;
-      document.addEventListener("touchstart", function(event) {
-        gestureStartX = event.changedTouches[0].pageX;
-      });
-      
-      document.addEventListener("touchend", function(event) {
-        var currentSlideIndex = parseInt(document.location.hash.slice(1), 10) || 1;
-        if(event.changedTouches[0].pageX > gestureStartX + MINMOVEX) {
-          // prev slide
-          document.location.hash = ++currentSlideIndex;
-          changeSlide("previous");
+      var slides = document.querySelectorAll("x-slide");
 
-          event.stopPropagation()
-        } else if(event.pageX < gestureStartX - MINMOVEX) {
-          // next slide
+      for(var i=0;i<slides.length;i++) {
+        Hammer(slides[i]).on("swipeleft", function(event) {
+          console.log("Touchy");
+          var currentSlideIndex = parseInt(document.location.hash.slice(1), 10) || 1;
           document.location.hash = ++currentSlideIndex;
           changeSlide("next");
-          event.stopPropagation()
-        }
-      });
+          e.stopPropagation();
+        });
+
+        Hammer(slides[i]).on("swiperight", function(event) {
+          console.log("Touchy");
+          var currentSlideIndex = parseInt(document.location.hash.slice(1), 10) || 1;
+          document.location.hash = --currentSlideIndex;
+          changeSlide("prev");
+          e.stopPropagation();
+        });
+        
+      }
     }
 
     proto.attachedCallback = function() {
@@ -113,4 +78,3 @@
 
     XDeck = document.registerElement("x-deck", { prototype: proto });
   })();
-</script>

@@ -1,0 +1,20 @@
+    ::content x-slide {
+      display: none;
+    }
+
+    ::content x-slide.active {
+      display: block;
+    }
+
+    @media print {
+      ::content x-slide {
+        display: block;
+        position: relative;
+        max-width: 29.7cm;
+        height: 15cm;
+        padding: 2cm;
+        margin: 1cm auto;
+        page-break-after: always;
+        overflow: hidden;
+      }
+    }    
