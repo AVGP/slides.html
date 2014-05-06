@@ -45,6 +45,61 @@
       this._root.appendChild(tplContent.cloneNode(true));
     };
 
+    var changeSlide = function(direction) {
+        var currentSlideIndex = parseInt(document.location.hash.slice(1), 10) || 1;
+        var slideShown     = document.querySelector("x-slide.active"),
+            slideToBeShown = slideShown;
+            
+        var transitFunc = (direction == "next" ? function(node) { return node.nextSibling;     } 
+                                               : function(node) { return node.previousSibling; });
+        
+        while((slideToBeShown = transitFunc(slideToBeShown)) && slideToBeShown.tagName !== "X-SLIDE");
+
+        if(!slideToBeShown) return;
+
+        slideToBeShown.classList.add("active");
+        slideShown.classList.remove("active");
+        
+    }
+
+    var addKeyboardListener = function() {
+      document.addEventListener("keyup", function(event) {
+        var currentSlideIndex = parseInt(document.location.hash.slice(1), 10) || 1;
+
+        if(event.keyCode == 37) {         // left
+          document.location.hash = --currentSlideIndex;
+          changeSlide("previous");
+        } else if(event.keyCode == 39 ) { // right
+          document.location.hash = ++currentSlideIndex;
+          changeSlide("next");
+        } else { return; }
+      });
+    }
+    
+    var addTouchListener = function() {
+      var gestureStartX = 0;
+      var MINMOVEX = 50;
+      document.addEventListener("touchstart", function(event) {
+        gestureStartX = event.changedTouches[0].pageX;
+      });
+      
+      document.addEventListener("touchend", function(event) {
+        var currentSlideIndex = parseInt(document.location.hash.slice(1), 10) || 1;
+        if(event.changedTouches[0].pageX > gestureStartX + MINMOVEX) {
+          // prev slide
+          document.location.hash = ++currentSlideIndex;
+          changeSlide("previous");
+
+          event.stopPropagation()
+        } else if(event.pageX < gestureStartX - MINMOVEX) {
+          // next slide
+          document.location.hash = ++currentSlideIndex;
+          changeSlide("next");
+          event.stopPropagation()
+        }
+      });
+    }
+
     proto.attachedCallback = function() {
       var self = this;
       var currentSlideIndex = parseInt(document.location.hash.slice(1), 10) || 1;
@@ -52,26 +107,8 @@
 
       self.querySelector("x-slide:nth-child(" + currentSlideIndex + ")").classList.add("active");
 
-      document.addEventListener("keyup", function(event) {
-        var transitFunc = undefined;
-        var slideShown     = document.querySelector("x-slide.active"),
-            slideToBeShown = slideShown;
-
-        if(event.keyCode == 37) {         // left
-          transitFunc = function(node) { return node.previousSibling; }
-          document.location.hash = --currentSlideIndex;
-        } else if(event.keyCode == 39 ) { // right
-            transitFunc = function(node) { return node.nextSibling; }
-            document.location.hash = ++currentSlideIndex;
-        } else { return; }
-
-        while((slideToBeShown = transitFunc(slideToBeShown)) && slideToBeShown.tagName !== "X-SLIDE");
-
-        if(!slideToBeShown) return;
-
-        slideToBeShown.classList.add("active");
-        slideShown.classList.remove("active");
-      });
+      addKeyboardListener();
+      addTouchListener();
     };
 
     XDeck = document.registerElement("x-deck", { prototype: proto });
