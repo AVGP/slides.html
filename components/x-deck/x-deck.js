@@ -5,7 +5,11 @@
     var proto = Object.create(HTMLElement.prototype);
 
     proto.createdCallback = function() {
-      this._root = this.createShadowRoot();
+      if(this.createShadowRoot) {
+        this._root = this.createShadowRoot();
+      } else {
+        this._root = this.webkitCreateShadowRoot();
+      }
 
       var tplContent = localDoc.querySelector("template#deck").content;
       this._root.appendChild(tplContent.cloneNode(true));
