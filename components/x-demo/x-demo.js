@@ -13,7 +13,12 @@ var XDemo = undefined;
   Object.defineProperty(proto, "src", { get: function() { return src; }, set: function(newSrc) { src = newSrc; this.load(); } });
 
   proto.createdCallback = function() {
-    this._root = this.createShadowRoot();
+    if(this.createShadowRoot) {
+      this._root = this.createShadowRoot();
+    } else {
+      this._root = this.webkitCreateShadowRoot();
+    }
+
     var tplContent = localDoc.querySelector("template").content;
     this._root.appendChild(tplContent.cloneNode(true));
 
