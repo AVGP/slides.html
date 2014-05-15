@@ -7,7 +7,11 @@ var XDemo = undefined;
     preview.document.close();
   };
 
-  var localDoc = document.currentScript.ownerDocument;
+  if(document.currentScript) {
+    var localDoc = document.currentScript.ownerDocument;
+  } else {
+    var localDoc = document._currentScript.ownerDocument;
+  }
   var proto = Object.create(HTMLElement.prototype);
 
   Object.defineProperty(proto, "src", { get: function() { return src; }, set: function(newSrc) { src = newSrc; this.load(); } });
