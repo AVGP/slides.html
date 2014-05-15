@@ -1,7 +1,11 @@
   var XDeck = undefined;
 
   (function() {
-    var localDoc = document.currentScript.ownerDocument;
+    if(document.currentScript) {
+      var localDoc = document.currentScript.ownerDocument;
+    } else {
+      var localDoc = document._currentScript.ownerDocument;
+    }
     var proto = Object.create(HTMLElement.prototype);
 
     proto.createdCallback = function() {
