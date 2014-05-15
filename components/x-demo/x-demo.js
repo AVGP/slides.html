@@ -6,11 +6,12 @@ var XDemo = undefined;
     preview.document.write(source);
     preview.document.close();
   };
-
-  if(document.currentScript) {
-    var localDoc = document.currentScript.ownerDocument;
-  } else {
+  
+  // The polyfill needs to take precedence or it will reference the wrong document
+  if(document._currentScript) {
     var localDoc = document._currentScript.ownerDocument;
+  } else {
+    var localDoc = document.currentScript.ownerDocument;
   }
   var proto = Object.create(HTMLElement.prototype);
 
